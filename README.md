@@ -58,3 +58,20 @@ unit test for model
 php artisan make:test ProjectTest --unit
 ```
 
+## 4 Project require owner
+
+​	4.1 create test - project requires_an_owner + update migration + migrate refresh
+
+​	4.2 update factory to have id  + store method required param
+
+​	4.3 add vue auth /  add middleware to route  - redirection / update tests 
+
+​	4.4 unit test for user-project relationship  | add method to model | update store in controller
+
+```php
+   Schema::create('projects', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+```
+
+https://laravel.com/docs/8.x/authentication
