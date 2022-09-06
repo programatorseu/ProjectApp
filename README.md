@@ -44,3 +44,17 @@ $args = request()->validate(['title' => 'required', 'description' => 'required']
 
 
 
+
+
+## 3. Test to see single post - model test
+
+​	3.1. Create test - user can view project + route + controller method (route model mining) 
+
+​	3.2 create unit test for model -  that path() method works on model 
+
+unit test for model
+
+```bash
+php artisan make:test ProjectTest --unit
+```
+

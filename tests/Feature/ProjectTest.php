@@ -37,4 +37,14 @@ class ProjectTest extends TestCase
         $attr = Project::factory()->raw(['description' => '']);
         $this->post('/projects', $attr)->assertSessionHasErrors('description');
     }
+
+    /** @test */
+    public function can_see_single_project()
+    {
+        $this->withoutExceptionHandling();
+        $project = Project::factory()->create();
+        $this->get('/projects/' . $project->id)
+            ->assertSee($project->title)
+            ->assertSee($project->description);
+    }
 }

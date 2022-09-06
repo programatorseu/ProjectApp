@@ -14,6 +14,12 @@ class ProjectsController extends Controller
             'projects' => Project::all()
         ]);
     }
+    public function show(Project $project)
+    {
+        return view('projects.show', [
+            'project' => $project
+        ]);
+    }
     public function store()
     {
         $args = request()->validate(['title' => 'required', 'description' => 'required']);
