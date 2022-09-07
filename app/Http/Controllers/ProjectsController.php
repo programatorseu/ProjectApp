@@ -15,6 +15,7 @@ class ProjectsController extends Controller
             'projects' => auth()->user()->projects
         ]);
     }
+
     public function show(Project $project)
     {
         if (auth()->user()->isNot($project->owner)) {
@@ -24,6 +25,12 @@ class ProjectsController extends Controller
             'project' => $project
         ]);
     }
+
+    public function create()
+    {
+        return view('projects.create');
+    }
+
     public function store()
     {
         $attr = request()->validate([
@@ -32,6 +39,6 @@ class ProjectsController extends Controller
         ]);
         $attr['user_id'] = auth()->id();
         Project::create($attr);
-        return redirect('/');
+        return redirect('/projects');
     }
 }

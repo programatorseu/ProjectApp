@@ -18,9 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/projects/create', [ProjectsController::class, 'create'])->middleware('auth');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/projects', [ProjectsController::class, 'index']);
     Route::get('/projects/{project}', [ProjectsController::class, 'show']);
+    Route::get('/projects/}', [ProjectsController::class, 'show']);
+
     Route::post('/projects', [ProjectsController::class, 'store']);
 });
 

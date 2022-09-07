@@ -47,18 +47,7 @@ class ProjectTest extends TestCase
         $this->post('/projects', $attr)->assertSessionHasErrors('description');
     }
 
-    /** @test */
-    public function can_see_single_project()
-    {
-        $user = User::factory()->create()->first();
-        $this->actingAs($user);
 
-        $this->withoutExceptionHandling();
-        $project = Project::factory()->create();
-        $this->get('/projects/' . $project->id)
-            ->assertSee($project->title)
-            ->assertSee($project->description);
-    }
 
     /** @test */
     public function project_requires_an_owner()
@@ -83,5 +72,21 @@ class ProjectTest extends TestCase
         $this->get($project->path())
             ->assertSee($project->title)
             ->assertSee($project->description);
+    }
+
+    /** @test */
+    public function user_can_create_project()
+    {
+        $user = User::factory()->create()->first();
+        $this->actingAs($user);
+        $this->get('/projects/create')->assertStatus(200);
+
+        $attributes = [
+            'title' => $this->faker->sentence,
+            'description' => $this->faker->paragraph
+        ];
+        $this->post('/projects', $attributes)->assertRedirect('/projects');
+        $this->assertDatabaseHas('projects', $attributes);
+        $this->get('/projects')->assertSee($attributes['title']);
     }
 }
