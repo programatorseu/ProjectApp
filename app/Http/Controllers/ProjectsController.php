@@ -7,15 +7,19 @@ use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
 {
+
     //
     public function index()
     {
         return view('projects.index', [
-            'projects' => Project::all()
+            'projects' => auth()->user()->projects
         ]);
     }
     public function show(Project $project)
     {
+        if (auth()->user()->isNot($project->owner)) {
+            abort(403);
+        }
         return view('projects.show', [
             'project' => $project
         ]);

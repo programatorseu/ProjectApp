@@ -66,4 +66,22 @@ class ProjectTest extends TestCase
         $attr = Project::factory()->raw();
         $this->post('/projects', $attr)->assertRedirect('login');
     }
+
+
+    /** @test */
+    public function guest_can_not_view_projects()
+    {
+        $this->get('/projects')->assertRedirect('login');
+    }
+
+    /** @test */
+    public function user_can_view_their_projects()
+    {
+        $this->be(User::factory()->create()->first());
+        $this->withoutExceptionHandling();
+        $project =  Project::factory()->create(['user_id' => auth()->id()]);
+        $this->get($project->path())
+            ->assertSee($project->title)
+            ->assertSee($project->description);
+    }
 }
