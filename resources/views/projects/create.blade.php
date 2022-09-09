@@ -1,21 +1,16 @@
-<form class="container" action="/projects" method="post">
-    @csrf
-   <h1 class="heading is-1">Create a Project</h1>
-    <div class="field">
-        <label for="title" class="label">Title</label>
-        <div class="control">
-            <input type="text" class="input" name="title" placeholder="title" />
-        </div>
-    </div>
-    <div class="field">
-        <label for="description" class="label">Description</label>
-        <div class="control">
-            <textarea name="description" class="textarea"></textarea>
-        </div>
-    </div>
-    <div class="field">
-        <div class="control">
-            <button type="submit" class="button is-link">Create Project</button>
-        </div>
-    </div>
-</form>
+<x-layout>
+    @include('_header')
+    <div class="lg:w-1/2 lg:mx-auto bg-white p-6 md:py-12 md:px-16 rounded shadow">
+        <h1 class="text-2xl font-normal mb-10 text-center">
+            Let's start something new
+        </h1>
+        <form
+            action="/projects"
+            method="POST">
+            @include('projects.form', [
+                'project' => new App\Models\Project,
+                'buttonText' => 'Create Project'
+            ])
+        </form>
+    </div>    
+</x-layout>

@@ -197,3 +197,46 @@ class Task extends Model
     ]
 ```
 
+## 10. Reduce Form + validation
+
+1. change @update method
+2. add `edit` endpoint 
+
+
+
+**FORM REQUEST !! **
+
+we have used protected method inside controller but now we would like to change to ```FormRequest``` : 
+
+ sometimes when validation is more significant - better is to extract form requdst :
+
+> keep validation / creation all together 
+
+```bash
+php artisan make:request UpdateProjectRequest 
+```
+
+stored inside app/http/Requests
+
+there 2 methods
+
+- authorize  - whether we can do or not that request 
+
+  >  we will move our authorization here (but we need to use Gate because authorize is a trait on our  controller )
+
+  we need access for project -> use route model binding 
+
+- vlidation rules 
+
+we want this gate : `use Illuminate\Support\Facades\Gate;`
+
+then usage :
+
+```php
+    public function update(UpdateProjectRequest $request, Project $project,)
+    {
+        $project->update($request->validated());
+        return redirect($project->path());
+    }
+```
+
