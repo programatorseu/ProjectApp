@@ -22,7 +22,7 @@ create test with artisan
 
 ## 2. Testing request validation
 
-​ 2.1. create new test methods
+ 2.1. create new test methods
 
 ```php
     public function require_title()
@@ -30,9 +30,9 @@ create test with artisan
         $attr = Project::factory()->raw(['title' => '']);
 ```
 
-​ 2.2 create factory - run it in tinker
+ 2.2 create factory - run it in tinker
 
-​ 2.3 update store method inside Controller
+ 2.3 update store method inside Controller
 
 ```php
 $args = request()->validate(['title' => 'required', 'description' => 'required']);
@@ -40,9 +40,9 @@ $args = request()->validate(['title' => 'required', 'description' => 'required']
 
 ## 3. Test to see single post - model test
 
-​ 3.1. Create test - user can view project + route + controller method (route model mining)
+ 3.1. Create test - user can view project + route + controller method (route model mining)
 
-​ 3.2 create unit test for model - that path() method works on model
+ 3.2 create unit test for model - that path() method works on model
 
 unit test for model
 
@@ -52,13 +52,13 @@ php artisan make:test ProjectTest --unit
 
 ## 4 Project require owner
 
-​ 4.1 create test - project requires_an_owner + update migration + migrate refresh
+ 4.1 create test - project requires_an_owner + update migration + migrate refresh
 
-​ 4.2 update factory to have id + store method required param
+ 4.2 update factory to have id + store method required param
 
-​ 4.3 add vue auth / add middleware to route - redirection / update tests
+ 4.3 add vue auth / add middleware to route - redirection / update tests
 
-​ 4.4 unit test for user-project relationship | add method to model | update store in controller
+ 4.4 unit test for user-project relationship | add method to model | update store in controller
 
 ```php
    Schema::create('projects', function (Blueprint $table) {
@@ -155,3 +155,45 @@ class Task extends Model
     protected $touches = ['project'];
 
 ```
+
+## 9. Notes + policy
+
+-> migration in order to pass notes 
+
+-> update @store method 
+
+-> create @update method to pass only notes
+
+-> create Policy 
+
+**interesting case:  **
+
+```php
+        $project->update([
+            'notes' => request('notes')
+        ])
+```
+
+```
+ #attributes: array:7 [▼
+    "id" => 1
+
+    "notes" => "any notes that goes here"
+    "created_at" => "2022-09-09 12:08:45"
+    "updated_at" => "2022-09-09 12:08:55"
+  ]
+```
+
+
+
+```php
+        $project->update(request(['notes']));
+```
+
+```
+  "description" => "learn this shit"
+    "notes" => array:1 [▼
+      "notes" => "any notes that goes here"
+    ]
+```
+
