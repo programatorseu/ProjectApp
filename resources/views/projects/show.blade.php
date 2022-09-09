@@ -54,6 +54,7 @@
             </div>
             <div class="lg:w-1/4">
                 <x-card :project="$project"></x-card>
+                @include ('projects.activity.card')
             </div>
         </div>
     </main>

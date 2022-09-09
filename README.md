@@ -245,23 +245,76 @@ then usage :
 1. create model + migration (connect with project )
 
 2. create observer - register inside `AppServiceProvider`
-3. create @created & @updated methods
 
-4. Project@addTask method -> add Activity 
+   
 
-	5. Task model - override @boot method 
+---
+
+On ProjectObserver
+
+```php
+class ProjectObserver
+{
+    /**
+     * Handle the Project "created" event.
+     *
+     * @param  \App\Models\Project  $project
+     * @return void
+     */
+    public function created(Project $project)
+    {
+        $project->recordActivity('created');
+    }
+
+    public function updated(Project $project)
+    {
+        $project->recordActivity('updated');
+    }
+```
+
+we call `recordActivity` on Project eloquent model
+
+Project@recordActivity
+
+- method responsible for creating Activity
+
+```php
+    public function recordActivity($type)
+    {
+        Activity::create([
+            'project_id' => $this->id,
+            'description' => $type
+        ]);
+    }
+```
+
+i task we have 2 expectaions - when is created & completed: 
 
 ```php
     protected static function boot()
     {
         parent::boot();
         static::created(function ($task) {
-            Activity::create([
-                'project_id' => $task->project->id,
-                'description' => 'created_task'
-
-            ]);
+            $task->project->recordActivity('created_task');
         });
+    }
+    public function complete()
+    {
+        $this->update(['completed' => true]);
+        $this->project->recordActivity('completed_task');
     }
 ```
 
+
+
+--> **refactor**
+
+in Project model we have activity relationship already set up 
+
+* we are going to refector recordActivty method
+
+- add Activity for **incompliting **
+
+​	-- ProjectTaskController@update
+
+- add TaskObserver 
