@@ -240,3 +240,28 @@ then usage :
     }
 ```
 
+## 11. Activity 
+
+1. create model + migration (connect with project )
+
+2. create observer - register inside `AppServiceProvider`
+3. create @created & @updated methods
+
+4. Project@addTask method -> add Activity 
+
+	5. Task model - override @boot method 
+
+```php
+    protected static function boot()
+    {
+        parent::boot();
+        static::created(function ($task) {
+            Activity::create([
+                'project_id' => $task->project->id,
+                'description' => 'created_task'
+
+            ]);
+        });
+    }
+```
+
